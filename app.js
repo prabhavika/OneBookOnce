@@ -5,6 +5,7 @@ const register = require("./routes/userRegistrationRoute");
 const { testDbConnection } = require("./config/db");
 const userProfile = require("./routes/userProfileRoute");
 const genres = require("./routes/genreRoute");
+const bookDetails = require("./routes/booksRoute");
 
 var app = express();
 app.use(express.json());
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 app.use("/api/user", register);
 app.use("/api/Profile", userProfile);
 app.use("/api/genres", genres);
+app.use("/api/bookdetails", bookDetails);
 
 app.listen(port, () => {
   console.log(`Listening to port ${port}!`);

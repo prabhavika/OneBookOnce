@@ -37,10 +37,6 @@ const userDetails = sq.define(
 
 const getUserByEmail = async (email) => {
   try {
-    // const data = await pool.query(
-    //   `SELECt * FROM user_details WHERE email = $1;`,
-    //   [email]
-    // );
     const data = await userDetails.findAll({
       where: {
         email: email,
@@ -59,11 +55,6 @@ const getUserByEmail = async (email) => {
 
 const getUsername = async (username) => {
   try {
-    // const usernamedata = await pool.query(
-    //   `SELECT * FROM user_details WHERE username = $1;`,
-    //   [username]
-    // );
-    // return usernamedata.rows;
     const usernamedata = await userDetails.findAll({
       where: {
         username: username,
@@ -82,11 +73,6 @@ const getUsername = async (username) => {
 
 const createUser = async (username, name, email, hashedPassword, role) => {
   try {
-    // const result = await pool.query(
-    //   `INSERT INTO user_details (username, name, email, password, role) VALUES ($1, $2, $3, $4, $5);`,
-    //   [username, name, email, hashedPassword, role]
-    // );
-    // return result;
     const result = await userDetails.create({
       username,
       name,

@@ -1,13 +1,7 @@
-// const { UPDATE } = require("sequelize/lib/query-types");
-
 const { userDetails } = require("./userRegistrationModel");
 
 const userProfileDetails = async (username) => {
   try {
-    // const data = await pool.query(
-    //   `SELECT * FROM user_details WHERE username = $1`,
-    //   [username]
-    // );
     const data = await userDetails.findAll({
       where: {
         username: username,

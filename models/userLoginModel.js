@@ -2,10 +2,6 @@ const bcrypt = require("bcrypt");
 const { userDetails } = require("./userRegistrationModel");
 const checkUserEmail = async (email) => {
   try {
-    // const data = await pool.query(
-    //   `SELECT * FROM user_details WHERE email = $1;`,
-    //   [email]
-    // );
     const data = await userDetails.findAll({
       where: {
         email: email,

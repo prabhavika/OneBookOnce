@@ -1,10 +1,15 @@
-const { format } = require("path/win32");
 const { sq } = require("../config/db");
 const { DataTypes } = require("sequelize");
 
 const genre = sq.define(
   "genre",
   {
+    genre_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+    },
     genre: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -15,8 +20,8 @@ const genre = sq.define(
     timestamps: false,
   }
 );
-// genre.sync({ alter: true });
 
+genre.sync();
 const checkGenre = async (genreName) => {
   try {
     const data = await genre.findAll({
@@ -58,4 +63,81 @@ const genreList = async () => {
   }
 };
 
-module.exports = { genre, checkGenre, createGenre, genreList };
+const updateGenres = async (id, updatedGenre) => {
+  try {
+    await genre.update(
+      {
+        genre: updatedGenre,
+      },
+      {
+        where: {
+          genre_id: id,
+        },
+      }
+    );
+    const updatedEntry = await genre.findOne({
+      where: { genre_id: id },
+    });
+    return updatedEntry;
+  } catch (error) {
+    console.error("Error while editing genre!", error);
+    throw new Error("Error while updating genre");
+  }
+};
+
+const deletingGenre = async (id) => {
+  try {
+    const result = await genre.destroy({
+      where: { genre_id: id },
+    });
+    if (result === 0) {
+      console.log("No gerne found!");
+    } else {
+      console.log("Genre deleted successfully!");
+    }
+    return result;
+  } catch (error) {
+    console.error("Error while deleting genre in model!", error);
+    throw new Error("Error while deleting genre");
+  }
+};
+
+const deletingAllGenres = async () => {
+  try {
+    const result = await genre.destroy({
+      where: {},
+    });
+    return result;
+  } catch (error) {
+    console.error("Error while deleting genre in model!", error);
+    throw new Error("Error while deleting genre");
+  }
+};
+
+const getIdOfGenre = async (genrename) => {
+  try {
+    const genreId = await genre.findOne({
+      where: {
+        genre: genrename,
+      },
+    });
+    if (!genreId) {
+      return null;
+    }
+    return genreId.genre_id;
+  } catch (error) {
+    console.error("Error while fetching the id of genre in model!", error);
+    throw new Error("Error while fetching genre's id");
+  }
+};
+
+module.exports = {
+  genre,
+  checkGenre,
+  createGenre,
+  genreList,
+  updateGenres,
+  deletingGenre,
+  deletingAllGenres,
+  getIdOfGenre,
+};
